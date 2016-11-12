@@ -409,12 +409,12 @@ cache_char2policy(char c)		/* replacement policy as a char */
   case 'l': return LRU;
   case 'r': return Random;
   case 'f': return FIFO;
-  case 'i': return LIP;
-  case 'b': return BIP;
-  case 'd': return DIP;
-  case 'B': return BRRIP;
-  case 'S': return SRRIP;
-  case 'D': return DRRIP;
+  // case 'i': return LIP;
+  // case 'b': return BIP;
+  // case 'd': return DIP;
+  // case 'B': return BRRIP;
+  // case 'S': return SRRIP;
+  // case 'D': return DRRIP;
   default: fatal("bogus replacement policy, `%c'", c);
   }
 }
@@ -433,12 +433,12 @@ cache_config(struct cache_t *cp,	/* cache instance */
 	  cp->policy == LRU ? "LRU"
 	  : cp->policy == Random ? "Random"
 	  : cp->policy == FIFO ? "FIFO"
-    : cp->policy == LIP ? "LIP"
-    : cp->policy == BIP ? "BIP"
-    : cp->policy == DIP ? "DIP"
-    : cp->policy == BRRIP ? "BRRIP"
-    : cp->policy == SRRIP ? "SRRIP"
-    : cp->policy == DRRIP ? "SRRIP"
+    // : cp->policy == LIP ? "LIP"
+    // : cp->policy == BIP ? "BIP"
+    // : cp->policy == DIP ? "DIP"
+    // : cp->policy == BRRIP ? "BRRIP"
+    // : cp->policy == SRRIP ? "SRRIP"
+    // : cp->policy == DRRIP ? "SRRIP"
 	  : (abort(), ""));
 }
 
@@ -593,12 +593,12 @@ cache_access(struct cache_t *cp,	/* cache to access */
       repl = CACHE_BINDEX(cp, cp->sets[set].blks, bindex);
     }
     break;
-  case LIP:
-  case BIP:
-  case DIP:
-  case BRRIP:
-  case SRRIP:
-  case DRRIP:
+  // case LIP:
+  // case BIP:
+  // case DIP:
+  // case BRRIP:
+  // case SRRIP:
+  // case DRRIP:
   default:
     panic("bogus replacement policy");
   }
