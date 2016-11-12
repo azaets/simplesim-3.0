@@ -103,12 +103,12 @@ enum cache_policy {
   LRU,		/* replace least recently used block (perfect LRU) */
   Random,	/* replace a random block */
   FIFO,		/* replace the oldest block in the set */
-  LIP,    //
-  BIP,    //
-  DIP,    //
-  BRRIP,  //
-  SRRIP,  //
-  DRRIP   //
+  LIP,    /* replace least-times used block */
+  BIP,    /* replace  */
+  DIP,    /* replace blocks with accordace to LRU or BIP policy */
+  BRRIP,  /* replace */
+  SRRIP,  /* replace */
+  DRRIP   /* replace */
 };
 
 /* block status values */
