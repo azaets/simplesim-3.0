@@ -409,6 +409,7 @@ cache_char2policy(char c)		/* replacement policy as a char */
   case 'l': return LRU;
   case 'r': return Random;
   case 'f': return FIFO;
+  case 'L': return LIP;
   default: fatal("bogus replacement policy, `%c'", c);
   }
 }
@@ -427,6 +428,7 @@ cache_config(struct cache_t *cp,	/* cache instance */
 	  cp->policy == LRU ? "LRU"
 	  : cp->policy == Random ? "Random"
 	  : cp->policy == FIFO ? "FIFO"
+    : cp->policy == LIP ? "LIP"
 	  : (abort(), ""));
 }
 
@@ -581,6 +583,12 @@ cache_access(struct cache_t *cp,	/* cache to access */
       repl = CACHE_BINDEX(cp, cp->sets[set].blks, bindex);
     }
     break;
+/*##################################################################*/
+  case LIP:
+    {
+      repl = cp->sets[set].way_head;
+    }
+    break;
   default:
     panic("bogus replacement policy");
   }
@@ -671,10 +679,15 @@ cache_access(struct cache_t *cp,	/* cache to access */
   if (cmd == Write)
     blk->status |= CACHE_BLK_DIRTY;
 
-  /* if LRU replacement and this is not the first element of list, reorder */
+  /* if LRU/LIP replacement and this is not the first element of list, reorder */
   /* NOTE: for L2 cache, don't update the cache line status for write requests */
   if ((strcmp(cp->name, "ul2") != 0) || (cmd == Read)) {
     if (blk->way_prev && cp->policy == LRU)
+    {
+      /* move this block to head of the way (MRU) list */
+      update_way_list(&cp->sets[set], blk, Head);
+    }
+    else if (blk->way_prev && cp->policy == LIP)
     {
       /* move this block to head of the way (MRU) list */
       update_way_list(&cp->sets[set], blk, Head);
